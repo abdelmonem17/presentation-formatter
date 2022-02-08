@@ -1,0 +1,25 @@
+{
+  "title":"hello rust",
+  "sections":[
+    {
+      "title": "first section",
+      "intro": "welcome",
+      "code": "let x = 1;\nprintln!(\"test\");",
+      "details":""
+    },
+    {
+      "title": "first section",
+      "intro": "welcome",
+      "code": "let x = 1;\nprintln!(\"test\");",
+      "details":""
+    },
+    {
+      "title": "third section",
+      "intro": "welcome",
+      "code": "let x = 1;\nprintln!(\"test\");",
+      "details":""
+    }
+
+  ]
+
+}
