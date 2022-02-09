@@ -25,8 +25,8 @@ fn format_sections_for_hackmd(sections:&Vec<Section>)->String{
         if !section.title.is_empty(){
             data = data + "#" + section.title.as_str() + "\n";
         }
-        if !section.intro.is_empty(){
-            data = data + section.intro.as_str() + "\n";
+        if !section.introduction.is_empty(){
+            data = data + section.introduction.as_str() + "\n";
         }
 
         if !section.code.is_empty(){

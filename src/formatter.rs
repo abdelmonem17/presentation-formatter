@@ -15,7 +15,7 @@ pub struct UserData{
 #[serde(default)]
 pub struct Section{
     pub title:String,
-    pub  intro:String,
+    pub introduction:String,
     pub code :String,
     pub details:String,
 }
