@@ -1,0 +1,9 @@
+ident_list={ANY*}
+
+File = {SOI ~HtmlContent~EOI}
+Data={ASCII_ALPHANUMERIC+}
+HtmlContent = {ANY+ ~ "<td"  ~ Data ~ ANY+ ~ ">" ~Span | Data ~"</td>"}
+Span = {"<span" ~ ANY* ~ ">" ~ Data ~ "</span>"}
+
+
+WHITESPACE = {" " | "\n" | "\n\r"}

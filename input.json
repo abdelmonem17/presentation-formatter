@@ -4,13 +4,13 @@
     {
       "title": "first section",
       "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test1\");",
+      "code": "https://github.com/accounts/project/files/line",
       "details":""
     },
     {
       "title": "second section",
       "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test2\");",
+      "code": "$root/samples/examples",
       "details":""
     },
     {

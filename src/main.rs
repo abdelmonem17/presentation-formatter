@@ -1,13 +1,16 @@
 mod formatter;
 mod json_format;
-mod hackmd_formater;
+mod hackmd_formatter;
 mod csv_format;
+mod parser;
 
 pub use formatter::*;
 pub use json_format::*;
-pub use hackmd_formater::*;
+pub use hackmd_formatter::*;
 pub use csv_format::*;
 
+#[macro_use]
+extern crate pest_derive;
 // fn main() {
 //     //let format = JsonFormat;
 //     let hackmd = HackMDFormatter;
@@ -20,6 +23,7 @@ pub use csv_format::*;
 
 
 use clap::Parser;
+use std::error::Error;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -39,8 +43,12 @@ struct Args {
     output_format:String,
 }
 
-
-fn main() {
+#[tokio::main]
+async fn main()->Result<(),Box<dyn Error>> {
+    let data = get_code_from_link(
+        "https://github.com/near/near-sdk-rs/blob/master/examples/status-message/Cargo.toml?plain=1#L8").await?;
+    println!("{:?}",data);
+    return Ok(());
     let args = Args::parse();
     let input_format:Box<dyn FormatReader> = match args.input_format.as_str(){
         "json"=>Box::new(JsonFormat),

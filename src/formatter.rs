@@ -28,12 +28,17 @@ pub trait FormatWriter{
     fn writer(&self,path: &str,data:&UserData) ->Result<(),Box<dyn Error>>;
 }
 
+pub async fn get_code_from_link(url:&str)->Result<String,Box<dyn Error>>{
+   let response =  reqwest::get(url).await?;
+    let body = response.bytes().await?;
+    Ok(String::from_utf8_lossy(body.as_ref()).to_string())
 
+}
 
 
 pub fn get_links(data:&str)->Vec<(String,String)> {
     let mut out = Vec::new();
-    let regex = regex::Regex::new(r"\((?P<title>.+)\)\((?P<link>.+)\)").unwrap();
+    let regex = regex::Regex::new(r"\[(?P<title>.+)\]\((?P<link>.+)\)").unwrap();
     let matches = regex.captures_iter(data);
     for mat in matches{
         out.push((mat.name("title").unwrap().as_str().to_string()
