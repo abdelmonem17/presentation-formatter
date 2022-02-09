@@ -4,22 +4,21 @@
     {
       "title": "first section",
       "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test\");",
+      "code": "let x = 1;\nprintln!(\"test1\");",
       "details":""
     },
     {
-      "title": "first section",
+      "title": "second section",
       "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test\");",
+      "code": "let x = 1;\nprintln!(\"test2\");",
       "details":""
     },
     {
       "title": "third section",
       "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test\");",
+      "code": "let x = 1;\nprintln!(\"test3\");",
       "details":""
     }
-
   ]
 
 }
