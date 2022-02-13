@@ -1,23 +1,40 @@
 {
   "title":"hello rust",
+  "text": "texting",
   "sections":[
     {
       "title": "first section",
-      "introduction": "welcome",
-      "code": "https://github.com/accounts/project/files/line",
-      "details":""
+      "text":"first section details",
+      "pages" : [
+        {
+          "title": "page section",
+          "code": "https://github.com/abdelmonem17/presentation-formatter/blob/3e90ca7940feb272125d143ce19a064e9e9e8628/Cargo.toml#L6-L9",
+          "text": "first page details"
+        }
+      ]
+
     },
     {
       "title": "second section",
-      "introduction": "welcome",
-      "code": "$root/samples/examples",
-      "details":""
-    },
-    {
-      "title": "third section",
-      "introduction": "welcome",
-      "code": "let x = 1;\nprintln!(\"test3\");",
-      "details":""
+      "text":"first section details",
+      "pages" : [
+        {
+          "title": "first page",
+          "code": "https://github.com/abdelmonem17/presentation-formatter/blob/3e90ca7940feb272125d143ce19a064e9e9e8628/Cargo.toml#L6-L9",
+          "text": "first page details"
+        },
+        {
+          "title": "second page",
+          "code": "https://github.com/abdelmonem17/presentation-formatter/blob/3e90ca7940feb272125d143ce19a064e9e9e8628/Cargo.toml#L6-L9",
+          "text": "second page details"
+        },
+        {
+          "title": "third page",
+          "code": "https://github.com/abdelmonem17/presentation-formatter/blob/3e90ca7940feb272125d143ce19a064e9e9e8628/Cargo.toml#L6-L9",
+          "text": "third page details"
+        }
+      ]
+
     }
   ]
 

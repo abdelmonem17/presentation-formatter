@@ -1,19 +1,64 @@
 # hello rust
+
+texting
+
 ## first section
-welcome
+
+first section details
+
+---
+
+## page section
+
 ```rust=
-let x = 1;
-println!("test1");
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde= { version = "1" , features =["derive"]}
 ```
+
+first page details
+
 ## second section
-welcome
+
+first section details
+
+---
+
+## first page
+
 ```rust=
-let x = 1;
-println!("test2");
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde= { version = "1" , features =["derive"]}
 ```
-## third section
-welcome
+
+first page details
+
+----
+
+### second page
+
 ```rust=
-let x = 1;
-println!("test3");
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde= { version = "1" , features =["derive"]}
 ```
+
+second page details
+
+----
+
+### third page
+
+```rust=
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde= { version = "1" , features =["derive"]}
+```
+
+third page details
+
