@@ -31,7 +31,8 @@ pub struct Page{
 }
 
 pub trait CodeReader{
-    fn read_code(&self,path:&str)->Result<String,Box<dyn Error>>{
+    //returns code and start line number of code
+    fn read_code(&self,path:&str)->Result<(String,(usize,usize)),Box<dyn Error>>{
         get_code_from_link(path)
     }
 }
