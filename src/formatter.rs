@@ -27,6 +27,9 @@ pub struct Section{
 pub struct Page{
     pub(crate) title:String,
     pub(crate) code :String,
+    ///data that separated into multiple lines
+    #[serde(rename="rawData")]
+    pub(crate) raw_data :Vec<String>,
     pub(crate) text:String,
 }
 

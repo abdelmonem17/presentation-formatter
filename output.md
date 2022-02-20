@@ -7,7 +7,7 @@
 
 # Learn rust with NEAR
 
-Smart Contracts are the back-end of your application that runs code and stores data on the blockchain. All smart contracts on NEAR must be compiled to [WebAssemble](https://webassembly.org/) or simply WASM. Currently, we support two languages [AssembleScript](https://www.assemblyscript.org/) and [Rust](https://www.rust-lang.org/) with custom software development 
+Smart contracts are the back-end of your application that runs code and stores data on the blockchain. All smart contracts on NEAR must be compiled to [WebAssemble](https://webassembly.org/) or simply WASM. Currently, we support two languages [AssembleScript](https://www.assemblyscript.org/) and [Rust](https://www.rust-lang.org/) with custom software development 
 
 ---
 
@@ -24,11 +24,11 @@ kits (SDKs) to assist in their creation but you can use any programming language
 ### variables and functions
 
 ```rs=16
-    pub fn set_status(&mut self, message: String) {
-        let account_id = env::signer_account_id();
-        log!("{} set_status with message {}", account_id, message);
-        self.records.insert(account_id, message);
-    }
+ pub fn set_status(&mut self, message: String) {
+     let account_id = env::signer_account_id();
+     log!("{} set_status with message {}", account_id, message);
+     self.records.insert(account_id, message);
+ }
 ```
 
 This is a defination for [function](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html) in rust, so here specifing a function name and signatures, set_status is a function with [String](https://doc.rust-lang.org/std/string/struct.String.html) type as input and no return type . First line in the [function](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html) here calls function and creates [variable](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) finally assigning the result to this variable, creating a varable in rust like any other language except the [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html).
@@ -38,10 +38,10 @@ This is a defination for [function](https://doc.rust-lang.org/book/ch03-03-how-f
 ### variables and functions
 
 ```rs=22
-    pub fn get_status(&self, account_id: AccountId) -> Option::<String> {
-        log!("get_status for account_id {}", account_id);
-        self.records.get(&account_id).cloned()
-    }
+ pub fn get_status(&self, account_id: AccountId) -> Option::<String> {
+     log!("get_status for account_id {}", account_id);
+     self.records.get(&account_id).cloned()
+ }
 ```
 
 at line 24 we omtted ';' because in rust you can return value implictly like this or using [return](https://doc.rust-lang.org/std/keyword.return.html) keyword like any statement.
@@ -82,7 +82,7 @@ in rust we can attach functions to the defined struct using [impl](https://doc.r
 
 ----
 
-### impl,ownership and borrowing
+### ownership and borrowing
 
  to make instance function you must use [self](https://doc.rust-lang.org/std/keyword.self.html), &mut self or &self to refer to the current object.Rust introduces new concept of [ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) and [borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html) for example when you make the function take 'self' as a prameter so here you give the function the ownership for the current object instead of take a copy of it, but when you pass '&self' or '&mut self' here you make the function borrow the current object for lifetime of the function,
 
@@ -154,9 +154,9 @@ near-sdk = { path = "../../near-sdk" }
 ### if condition
 
 ```rs=32
-        if lifetime_after <= lifetime_before {
-            self.is_alive = false;
-        }
+ if lifetime_after <= lifetime_before {
+     self.is_alive = false;
+ }
 ```
 
 Rust has [if condition](https://doc.rust-lang.org/rust-by-example/flow_control/if_else.html) like other languages but the `()` is optional, but the strange in rust is if is and expression not statement as we well see.
@@ -166,11 +166,11 @@ Rust has [if condition](https://doc.rust-lang.org/rust-by-example/flow_control/i
 ### if as expression
 
 ```rs=60
-        if success {
-            Tranx::Approved(buyer, seller)
-        } else {
-            Tranx::Denied(deficit)
-        }
+ if success {
+     Tranx::Approved(buyer, seller)
+ } else {
+     Tranx::Denied(deficit)
+ }
 ```
 
 as we see at 2th and 4th we didn't put ';' and as we mention previously it's explicit return data from the function so we could understand that 'if expression' returns value so it can be expression.
@@ -180,11 +180,11 @@ as we see at 2th and 4th we didn't put ';' and as we mention previously it's exp
 ### looping
 
 ```rs=139
-        for key in keys {
-            let q = lhs.entry(key.clone()).or_insert(Quantity(0));
-            let Quantity(lhs_quantity) = *q;
-            *q = Quantity(lhs_quantity * rhs_quantity);
-        }
+ for key in keys {
+     let q = lhs.entry(key.clone()).or_insert(Quantity(0));
+     let Quantity(lhs_quantity) = *q;
+     *q = Quantity(lhs_quantity * rhs_quantity);
+ }
 ```
 
 here we use [for](https://doc.rust-lang.org/rust-by-example/flow_control/for.html) to loop over keys, in rust we can loop over [iterators](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
@@ -206,11 +206,11 @@ here we define [enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.ht
 
 ### match
 
-```rs=28
-pub enum Tranx {
-    Approved(Account, Account),
-    Denied(HashMap<Asset, Quantity>),
-}
+```rs=35
+ match self.0.get(asset) {
+     Some(quantity) => quantity.clone(),
+     None => Quantity(0),
+ }
 ```
 
 [match](https://doc.rust-lang.org/rust-by-example/flow_control/match.html) [expression](https://doc.rust-lang.org/reference/statements-and-expressions.html) in rust is used for pattern matching and here we use it to match againts options (Some('with data') or None).
@@ -220,12 +220,12 @@ pub enum Tranx {
 ### if let with enum
 
 ```rs=23
-        if let Some(Tranx::Approved(buyer, _)) = exs.iter().find_map(|ex| {
-            match Account::exchange(rates.get(ex).unwrap(), Quantity(1), &self.account, mission) {
-                Tranx::Denied(_) => None,
-                tranx => Some(tranx),
-            }
-        }) {
+ if let Some(Tranx::Approved(buyer, _)) = exs.iter().find_map(|ex| {
+     match Account::exchange(rates.get(ex).unwrap(), Quantity(1), &self.account, mission) {
+         Tranx::Denied(_) => None,
+         tranx => Some(tranx),
+     }
+ }) {
 ```
 
 [if let](https://doc.rust-lang.org/rust-by-example/flow_control/if_let.html) used in matching againest enums like 'match' expression but it's best practice to use it in case of match againest only one member other wise use 'match', and here is an example of how to uses it to match againest 'Option' enum type. line 3 learn us how to access enum type variabe and it's data.
@@ -261,9 +261,9 @@ rust is not object oriented language but has [traits](https://doc.rust-lang.org/
 ### operations with non-primative types
 
 ```rs=42
-        let credit = &Account(rate.credit.clone()) * quantity;
-        let debit = &Account(rate.debit.clone()) * quantity;
-        let (buyer, seller) = (&(buyer - &debit) + &credit, &(seller - &credit) + &debit);
+ let credit = &Account(rate.credit.clone()) * quantity;
+ let debit = &Account(rate.debit.clone()) * quantity;
+ let (buyer, seller) = (&(buyer - &debit) + &credit, &(seller - &credit) + &debit);
 ```
 
 here we are making arithmatic operations on non primative types, but we must implement [operator overloads](https://doc.rust-lang.org/rust-by-example/trait/ops.html) traits for them.
@@ -273,9 +273,9 @@ here we are making arithmatic operations on non primative types, but we must imp
 ### generics
 
 ```rs=82
-    fn op<F>(lhs: &Account, rhs: &Account, op: F) -> Account
-    where
-        F: Fn(&Quantity, &Quantity) -> Quantity,
+ fn op<F>(lhs: &Account, rhs: &Account, op: F) -> Account
+ where
+     F: Fn(&Quantity, &Quantity) -> Quantity,
 ```
 
 here we define function with parameters which one of them is 'op:F' and it is a [generic](https://doc.rust-lang.org/rust-by-example/generics.html) type and here we bounded it with trait type which is [Fn](https://doc.rust-lang.org/std/ops/trait.Fn.html).
@@ -315,7 +315,7 @@ first line use [derive-macro](https://doc.rust-lang.org/reference/attributes/der
 ### Clone and Copy traits with macros
 
 ```rs=77
-                lhs.insert(rhs_key.clone(), Quantity(0));
+ lhs.insert(rhs_key.clone(), Quantity(0));
 ```
 
 here we use the function 'clone' on the non-primitive variable to get a deplicate of it but this requires that the type of this variable implementing [Clone](https://doc.rust-lang.org/std/clone/trait.Clone.html) trait other wise to get the data you only can move it's ownership if it's not implemnting [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait, and in the previous code we see that we implemented these traits using derive-macro.
@@ -325,27 +325,139 @@ here we use the function 'clone' on the non-primitive variable to get a deplicat
 ### calling macro
 
 ```rs=47
-    Account(hashmap![
-        Asset::MissionTime => Quantity(1000000),
-    ])
+ Account(hashmap![
+     Asset::MissionTime => Quantity(1000000),
+ ])
 ```
 
 It is a defintion for a private function, hashmap! it is [macro rules](https://doc.rust-lang.org/rust-by-example/macros.html) call with key=>value as input, this macro take pramaters and generate code to make a hashmap with this data.
-
-----
-
-### enum
-
-```rs=28
-pub enum Tranx {
-    Approved(Account, Account),
-    Denied(HashMap<Asset, Quantity>),
-}
-```
 
 ---
 
 ## Learning with fixing errors and warnnings
 
 we will investigate smart contracts that has warrnings and errors appear when using [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html) then fixing them one by one.we will investigate [status message collection](https://github.com/near/near-sdk-rs/tree/master/examples/status-message-collections) :records the status messages of the accounts that call this contract.
+
+----
+
+### the code with errors
+
+```rs=1
+use near_sdk::collections::{LookupMap, LookupSet};
+use near_sdk::{env, near_bindgen, BorshStorageKey, AccountId};
+
+#[derive(BorshSerialize, BorshStorageKey)]
+enum StorageKey {
+    Records,
+    UniqueValues,
+}
+
+#[near_bindgen]
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct StatusMessage {
+    pub records: LookupMap<AccountId, String>,
+    pub unique_values: LookupSet<String>,
+}
+
+impl Default for StatusMessage {
+    fn default() -> self {
+        self {
+            records: LookupMap::new(StorageKey::Records),
+            unique_values: LookupSet::new(StorageKey::UniqueValues),
+        }
+    }
+}
+
+#[near_bindgen]
+impl StatusMessage {
+    /// Returns true if the message is unique
+    pub fn set_status(&self, message: String) -> bool {
+        let account_id = env::signer_account_id();
+        self.records.insert(&account_id, message);
+        self.unique_values.insert(&message)
+    }
+
+    pub fn get_status(&self, account_id: AccountId) -> Option<String> {
+        self.records.get(&account_id);
+    }
+}
+```
+
+----
+
+### missing to import error
+
+```
+error: cannot find derive macro `BorshSerialize` in this scope
+      --> src\lib.rs:5:10
+      |
+    5 | #[derive(BorshSerialize, BorshStorageKey)]
+      |          ^^^^^^^^^^^^^^
+    error: cannot find derive macro `BorshDeserialize` in this scope
+      --> src\lib.rs:12:10
+       |
+```
+
+the compiler here throws error that it can't find 'BorshDeserialize' and 'BorshSeserialize' so to solve it you must provide full path to these traits or include them at start of the file like ```use near_sdk::borsh::{BorshDeserialize, BorshSerialize};```
+
+----
+
+### mismatch parameter error
+
+```
+      --> src\lib.rs:32:42
+      |
+   32 |         self.records.insert(&account_id, message);
+      |                                          ^^^^^^^
+      |             expected `&std::string::String`,found struct `std::string::String`
+      |             help: consider borrowing here: `&message`
+      --> src\lib.rs:12:10
+      |
+```
+
+Rust compiler is very helpful and lead you fix your error with some advisable messages so here you must pass a reference to the [string]https://doc.rust-lang.org/stable/std/string/struct.String.html not the string it self
+
+----
+
+### mismatch return type error
+
+```
+      error[E0308]: mismatched types
+      --> src\lib.rs:36:60
+      |
+   32 |         pub fn get_status(&mut self, account_id: AccountId) -> Option<String> {
+      |                ----------                                      ^^^^^^^^^^^^^^expected enum `std::option::Option`, found `()`
+      |                |
+      |            implicitly returns `()` as its body has no tail or `return` expression
+   37 |                                       self.records.get(&account_id);
+      |                                      - help: consider removing this semicolon
+      |
+      = note:   expected enum `std::option::Option<std::string::String>`
+                      found unit type `()`
+```
+
+in rust you can return data from the function simply by put the value at the end of the function without a semicolon or put semicolon but use [return](https://doc.rust-lang.org/std/keyword.return.html) keyword, 
+
+----
+
+### continue mismatch return type errors
+
+so here the compiler says that you return nothing but it function wants [Option](https://doc.rust-lang.org/std/option/) of string to be returned, so fix it by removing the semicolon at the last line in the function so that the return from calling 'get' function could be returned,'error[E0308]' this number could be helpful and you can search with it to get the full details and examples for this error.
+
+----
+
+### mutablity error
+
+```
+      error[E0596]: cannot borrow `self.records` as mutable, as it is behind a `&` reference
+      --> src\lib.rs:32:9
+      |
+   30 |         pub fn set_status(&self, message: String) -> bool {
+      |                           ----- help: consider changing this to be a mutable reference: `&mut self`
+   31 |         let account_id = env::signer_account_id();
+   32 |         self.records.insert(&account_id, &message);
+      |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+```
+
+in rust in order to modify a variable you must define at as a mutable, so here to here to update in current object you must declare it as [mutable reference](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html).
 

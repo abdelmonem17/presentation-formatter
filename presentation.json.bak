@@ -1,6 +1,6 @@
 {
   "title":"Learn rust with NEAR",
-  "text": "Smart contracts are the back-end of your application that runs code and stores data on the blockchain. All smart contracts on NEAR must be compiled to [WebAssemble](https://webassembly.org/) or simply WASM. Currently, we support two languages [AssembleScript](https://www.assemblyscript.org/) and [Rust](https://www.rust-lang.org/) with custom software development kits (SDKs) to assist in their creation but you can use any programming language and compile it to wasm. But here we will use Rust as it is a powerful language with a great developer experience.",
+  "text": "Smart Contracts are the back-end of your application that runs code and stores data on the blockchain. All smart contracts on NEAR must be compiled to [WebAssemble](https://webassembly.org/) or simply WASM. Currently, we support two languages [AssembleScript](https://www.assemblyscript.org/) and [Rust](https://www.rust-lang.org/) with custom software development kits (SDKs) to assist in their creation but you can use any programming language and compile it to wasm. But here we will use Rust as it is a powerful language with a great developer experience.",
   "sections":[
     {
       "title": "Your first contract",
@@ -93,7 +93,7 @@
         },
 		 {
           "title": "match",
-          "code": "https://github.com/near/near-sdk-rs/blob/1c5106bf0b3380d66d2689174f5e50b612101331/examples/mission-control/src/account.rs#L35-38",
+          "code": "https://github.com/near/near-sdk-rs/blob/1c5106bf0b3380d66d2689174f5e50b612101331/examples/mission-control/src/account.rs#L28-L31",
 		  "text" :"[match](https://doc.rust-lang.org/rust-by-example/flow_control/match.html) [expression](https://doc.rust-lang.org/reference/statements-and-expressions.html) in rust is used for pattern matching and here we use it to match againts options (Some('with data') or None)."
         },
 		
@@ -187,7 +187,7 @@
 			  "      |",
 			  "```"
 			  ],
-			  "text" :"Rust compiler is very helpful and lead you fix your error with some advisable messages so here you must pass a reference to the [string](https://doc.rust-lang.org/stable/std/string/struct.String.html) not the string it self"
+			  "text" :"Rust compiler is very helpful and lead you fix your error with some advisable messages so here you must pass a reference to the [string]https://doc.rust-lang.org/stable/std/string/struct.String.html not the string it self"
 			},
 			{
 			  "title": "mismatch return type error",
@@ -230,7 +230,7 @@
 			  "      |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`self` is a `&` reference, so the data it refers to cannot be borrowed as mutable",
 			  "```"
 			  ],
-			  "text" : "in rust in order to modify a variable you must define at as a mutable, so here to here to update in current object you must declare it as [mutable reference](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)."
+			  "text" : "in rust in order to modify a variable you must define at as a mutable, so here to here to update in current object you must declare it as [mutable reference](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)"
 			}
 		   
 		]

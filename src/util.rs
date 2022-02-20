@@ -37,6 +37,7 @@ pub fn get_code_from_link(url:&str) ->Result<(String,(usize,usize)),Box<dyn Erro
     let response =  reqwest::blocking::get(info.raw_link.as_str())?;
     let body = response.bytes()?;
     let code = String::from_utf8_lossy(body.as_ref());
+    //let mut space_count = 0;
     let (lines,lines_info) = get_lines_from_code(code.as_ref(),info.line_number.as_str())?;
     Ok((lines,lines_info))
 }
@@ -54,8 +55,47 @@ fn get_lines_from_code<'s>(code:&'s str,code_line:&str)->Result<(String,(usize,u
 }
 
 fn get_line_by_numbers(code:&str,start:usize,end:usize)->Result<String,Box<dyn Error>>{
-    let lines:String = code.split('\n')
+   // let mut space_count = 0;
+    /*let mut spaces = String::new();
+    for ch in code.as_ref().chars(){
+        if space_count == 0{
+            println!("start char '{}' and {}",ch,ch as u8);
+            space_count =1;
+        }
+        if ch == ' '{
+            //   space_count +=1;
+            spaces.push(' ');
+        }else{
+            break;
+        }
+    }
+    let code:String = code.as_ref().split('\n').map(|line:&str| {
+        println!("before '{}'",line);
+        let str = line.replacen(spaces.as_str(), "",1);
+        println!("after '{}'",str);
+        str
+    })
+        .collect::<Vec<String>>().join("\n");*/
+    let lines = code.split('\n')
         .skip(start - 1).take(end - start + 1)
+        .collect::<Vec<_>>();
+    let  first_line = lines[0].chars();
+    let mut spaces = String::new();
+    for ch in first_line{
+        // if space_count == 0{
+        //     println!("start char '{}' and {}",ch,ch as u8);
+        //     space_count =1;
+        // }
+        if ch == ' '{
+            //   space_count +=1;
+            spaces.push(' ');
+        }else{
+            break;
+        }
+    }
+    spaces.pop();
+    println!("line:{:?}\nspaces :{:?}",lines[0],spaces);
+    let lines:String = lines.iter().map(|line| line.replacen(spaces.as_str(),"",1))
         .collect::<Vec<_>>().join("\n");
     Ok(lines)
 }

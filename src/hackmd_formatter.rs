@@ -72,26 +72,39 @@ fn format_pages_for_hackmd(pages:&Vec<Page>) ->Result<String,Box<dyn Error>>{
 }
 fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>>{
     //let mut data = String::new();
+    //write the title
     let title_count = if !page.title.is_empty(){
         *data = data.to_owned() + "## " + page.title.as_str() + "\n\n";
         1
     }else{
         0
     };
-    let lines_count = if !page.code.is_empty(){
+
+    //write the code
+    let code_lines_count = if !page.code.is_empty(){
         let (code,(start,end)) = get_code_from_link(page.code.as_str())?;
         if !code.is_empty() {
             *data = data.to_string() + &*format!("```rs={}\n",start) + code.as_str() + "\n```\n\n";
         }
         //lines number
-        ((end + 1 - start)/3) %PAGE_LINES
+        ((end + 2 - start)/2) %PAGE_LINES
     }else{
         0
     };
-    let change_size = PAGE_CHARS - ((lines_count+title_count) * LINE_CHARS  );
+    //todo handle count of previous lines
+    let raw_data_lines_count = if !page.raw_data.is_empty(){
+        //let (code,(start,end)) = get_code_from_link(page.code.as_str())?;
+            *data = data.to_string() + &*page.raw_data.join("\n") + "\n\n";
+        //lines number
+        page.raw_data.len()
+    }else{
+        0
+    };
+    let used_chars = (code_lines_count + title_count + raw_data_lines_count) * LINE_CHARS  ;
+    let change_size = PAGE_CHARS - used_chars;
    // let change_size = 350;
     if !page.text.is_empty() {
-        if PAGE_CHARS <= ((lines_count+title_count) * LINE_CHARS  ){
+        if PAGE_CHARS <= used_chars{
             eprintln!("page text with title:{} must be shifted to the next page",page.title)
         }
         else if page.text.len() > change_size{
