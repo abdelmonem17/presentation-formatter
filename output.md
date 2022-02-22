@@ -7,457 +7,215 @@
 
 # Learn rust with NEAR
 
-Smart contracts are the back-end of your application that runs code and stores data on the blockchain. All smart contracts on NEAR must be compiled to [WebAssemble](https://webassembly.org/) or simply WASM. Currently, we support two languages [AssembleScript](https://www.assemblyscript.org/) and [Rust](https://www.rust-lang.org/) with custom software development 
+[fungable token](https://github.com/near/near-sdk-rs/tree/master/examples/fungible-token): Example implementation of a Fungible Token contract which uses [near-contract-standards](https://github.com/near/near-sdk-rs/tree/master/near-contract-standards) and [simulation](https://github.com/near/near-sdk-rs/tree/master/near-sdk-sim).
 
 ---
 
-kits (SDKs) to assist in their creation but you can use any programming language and compile it to wasm. But here we will use Rust as it is a powerful language with a great developer experience.
+## Variables and constant
 
----
-
-## Your first contract
-
-[status-message](https://github.com/near/near-sdk-rs/tree/master/examples/status-message): records the status messages of the accounts that call this contract.
+Rust has variables like any other language such as primative and non-primative and there are some special features we will disscus them one by one.
 
 ----
 
-### variables and functions
-
-```rs=16
- pub fn set_status(&mut self, message: String) {
-     let account_id = env::signer_account_id();
-     log!("{} set_status with message {}", account_id, message);
-     self.records.insert(account_id, message);
- }
-```
-
-This is a defination for [function](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html) in rust, so here specifing a function name and signatures, set_status is a function with [String](https://doc.rust-lang.org/std/string/struct.String.html) type as input and no return type . First line in the [function](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html) here calls function and creates [variable](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) finally assigning the result to this variable, creating a varable in rust like any other language except the [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html).
-
-----
-
-### variables and functions
-
-```rs=22
- pub fn get_status(&self, account_id: AccountId) -> Option::<String> {
-     log!("get_status for account_id {}", account_id);
-     self.records.get(&account_id).cloned()
- }
-```
-
-at line 24 we omtted ';' because in rust you can return value implictly like this or using [return](https://doc.rust-lang.org/std/keyword.return.html) keyword like any statement.
-
-----
-
-### struct
-
-```rs=9
-pub struct StatusMessage {
-    records: HashMap<AccountId, String>,
-}
-```
-
-Rust is like any other other language has primative types like bool,i32,u32, [more types](https://doc.rust-lang.org/book/ch03-02-data-types.html), in addition to [user defined types](https://doc.rust-lang.org/rust-by-example/custom_types.html) like [struct](https://doc.rust-lang.org/rust-by-example/custom_types/structs.html).these lines define structure with name 'StatusMessage' with records as a [hashmap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) member variable, hashmap is a custom variable that is built in the standard library of rust.
-
-----
-
-### impl for derived types
-
-```rs=14
-impl StatusMessage {
-    #[payable]
-    pub fn set_status(&mut self, message: String) {
-        let account_id = env::signer_account_id();
-        log!("{} set_status with message {}", account_id, message);
-        self.records.insert(account_id, message);
-    }
-
-    pub fn get_status(&self, account_id: AccountId) -> Option::<String> {
-        log!("get_status for account_id {}", account_id);
-        self.records.get(&account_id).cloned()
-    }
-}
-```
-
-in rust we can attach functions to the defined struct using [impl](https://doc.rust-lang.org/rust-by-example/generics/impl.html) so the [function](https://doc.rust-lang.org/rus-by-example/fn/methods.html) might be called from the instance or from the type itself, 
-
-----
-
-### ownership and borrowing
-
- to make instance function you must use [self](https://doc.rust-lang.org/std/keyword.self.html), &mut self or &self to refer to the current object.Rust introduces new concept of [ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) and [borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html) for example when you make the function take 'self' as a prameter so here you give the function the ownership for the current object instead of take a copy of it, but when you pass '&self' or '&mut self' here you make the function borrow the current object for lifetime of the function,
-
-----
-
-### ownership and borrowing
-
- as we mentioned before declarations of the variable determines the [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) of the variable so '&self' borrows the current object immutable so that it can't be changed and in this case called view method in smart contract code but '&mut self' borrows the current object so that it can't be changed so it is called change in the smart contract code.for example at line 6 we call 'insert' function in 'records' member of the current StatusMessage object so 'insert’ is member function for type of ‘records’
-
-----
-
-### ownership and borrowing
-
- also we see that at this line we pass 'message' and 'account_id' to the function so here we give this function the ownership of these variable so you can't use them after this line but in other hand at line 11 we pass '&account_id' so it is called borrowing the variable to the function.anther user define type here is the [enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html),enum in rust is like in other languages which represents named values except it can hold data,
-
-----
-
-### ownership and borrowing
-
- at line 9 we return '[Option](https://doc.rust-lang.org/std/option/)<[String](https://doc.rust-lang.org/std/string/struct.String.html)>' from the function so the function might return 'None' and it is equivalent to 'null' or return 'Some(String)' that has data.
-
-----
-
-### importing
-
-```rs=1
-use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{env, log, metadata, near_bindgen, AccountId};
-
-use std::collections::HashMap;
-```
-
-here,we are [importing](https://doc.rust-lang.org/reference/items/use-declarations.html) some structs,[traits](https://doc.rust-lang.org/book/ch10-02-traits.html) and other memebers from other libraries,also they are cold crates, but to import crate you must mention it in [Cargo.toml](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html) file.
-
-----
-
-### continue importing and cargo
-
-```rs=1
-[package]
-name = "status-message"
-version = "0.1.0"
-authors = ["Near Inc <hello@nearprotocol.com>"]
-edition = "2018"
-
-[lib]
-crate-type = ["cdylib"]
-
-[dependencies]
-near-sdk = { path = "../../near-sdk" }
-```
-
-[Cargo.toml](https://doc.rust-lang.org/cargo/reference/config.html) has configurations for the rust project, package section has fields that define metadata about the project.[depenedencies](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html) section starting from line 10 has the external crates that used in the project,
-
-----
-
-### continue importing and cargo
-
- so in line 10 we import 'near-sdk' from this relative path.lib section has configuration for the current lib crate, and 'cdylib' means dynamic system library will be produced.
-
----
-
-## second Contract
-
-[mission-control](https://github.com/near/near-sdk-rs/tree/master/examples/mission-control):implements simulation of a distributed network of drones interacting with the mission control system.
-
-----
-
-### if condition
+### [struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
 
 ```rs=32
- if lifetime_after <= lifetime_before {
-     self.is_alive = false;
- }
-```
-
-Rust has [if condition](https://doc.rust-lang.org/rust-by-example/flow_control/if_else.html) like other languages but the `()` is optional, but the strange in rust is if is and expression not statement as we well see.
-
-----
-
-### if as expression
-
-```rs=60
- if success {
-     Tranx::Approved(buyer, seller)
- } else {
-     Tranx::Denied(deficit)
- }
-```
-
-as we see at 2th and 4th we didn't put ';' and as we mention previously it's explicit return data from the function so we could understand that 'if expression' returns value so it can be expression.
-
-----
-
-### looping
-
-```rs=139
- for key in keys {
-     let q = lhs.entry(key.clone()).or_insert(Quantity(0));
-     let Quantity(lhs_quantity) = *q;
-     *q = Quantity(lhs_quantity * rhs_quantity);
- }
-```
-
-here we use [for](https://doc.rust-lang.org/rust-by-example/flow_control/for.html) to loop over keys, in rust we can loop over [iterators](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
-
-----
-
-### enum
-
-```rs=28
-pub enum Tranx {
-    Approved(Account, Account),
-    Denied(HashMap<Asset, Quantity>),
+pub struct Contract {
+    token: FungibleToken,
+    metadata: LazyOption<FungibleTokenMetadata>,
 }
 ```
 
-here we define [enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html) with two options.[enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html) in rust is like in other languages is custome type which represents named values except it can hold data.[Result](https://doc.rust-lang.org/std/result/) and [Option](https://doc.rust-lang.org/std/option/) are the most important examples for enums and they are builtin the standard library
+Rust doen't have classes but instead struct to define a container for data like in these line of code we define a struct with two variables 'token' and 'metadata'.
 
 ----
 
-### match
+### [enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html)
 
-```rs=35
- match self.0.get(asset) {
-     Some(quantity) => quantity.clone(),
-     None => Quantity(0),
+```rs=40
+enum StorageKey {
+    FungibleToken,
+    Metadata,
+}
+```
+
+Rust have enums to give names to const variables in additions other featurs we will explore them in next lessons like in this code we define new type called 'StorageKey' with two possibilities 'FungibleToken' and 'Metadata'.
+
+----
+
+### [const](https://doc.rust-lang.org/std/keyword.const.html)
+
+```rs=37
+const DATA_IMAGE_SVG_NEAR_ICON: &str = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 288 288'%3E%3Cg id='l' data-name='l'%3E%3Cpath d='M187.58,79.81l-30.1,44.69a3.2,3.2,0,0,0,4.75,4.2L191.86,103a1.2,1.2,0,0,1,2,.91v80.46a1.2,1.2,0,0,1-2.12.77L102.18,77.93A15.35,15.35,0,0,0,90.47,72.5H87.34A15.34,15.34,0,0,0,72,87.84V201.16A15.34,15.34,0,0,0,87.34,216.5h0a15.35,15.35,0,0,0,13.08-7.31l30.1-44.69a3.2,3.2,0,0,0-4.75-4.2L96.14,186a1.2,1.2,0,0,1-2-.91V104.61a1.2,1.2,0,0,1,2.12-.77l89.55,107.23a15.35,15.35,0,0,0,11.71,5.43h3.13A15.34,15.34,0,0,0,216,201.16V87.84A15.34,15.34,0,0,0,200.66,72.5h0A15.35,15.35,0,0,0,187.58,79.81Z'/%3E%3C/g%3E%3C/svg%3E";
+```
+
+Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for image csv value that might be used many times in the program.
+
+---
+
+## functions
+
+like any other language you can define some reusable code and it is called function.
+
+----
+
+### function definition and calling
+
+```rs=109
+ fn get_context(predecessor_account_id: AccountId) -> VMContextBuilder {
+     let mut builder = VMContextBuilder::new();
+     builder
+         .current_account_id(accounts(0))
+         .signer_account_id(predecessor_account_id.clone())
+         .predecessor_account_id(predecessor_account_id);
+     builder
  }
 ```
 
-[match](https://doc.rust-lang.org/rust-by-example/flow_control/match.html) [expression](https://doc.rust-lang.org/reference/statements-and-expressions.html) in rust is used for pattern matching and here we use it to match againts options (Some('with data') or None).
+here we are defining a function with name 'get_context', parameter and return type, also at lines 111th to 114 we call functions in a variable called 'builder' and they are [instance functions](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/) but we will learn them in the next section.
+
+---
+
+## impl section, and static and instance functions
+
+Rust is not object oriented language but you can define structs as data container and attach function to operate on this data, also you can do the same for enums.
 
 ----
 
-### if let with enum
+### [impl](https://doc.rust-lang.org/std/keyword.impl.html)
 
-```rs=23
- if let Some(Tranx::Approved(buyer, _)) = exs.iter().find_map(|ex| {
-     match Account::exchange(rates.get(ex).unwrap(), Quantity(1), &self.account, mission) {
-         Tranx::Denied(_) => None,
-         tranx => Some(tranx),
-     }
- }) {
+```rs=46
+impl Contract {
 ```
 
-[if let](https://doc.rust-lang.org/rust-by-example/flow_control/if_let.html) used in matching againest enums like 'match' expression but it's best practice to use it in case of match againest only one member other wise use 'match', and here is an example of how to uses it to match againest 'Option' enum type. line 3 learn us how to access enum type variabe and it's data.
+here we start to write function to manipulate the dervied type
+
+----
+
+### [static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)
+
+```rs=69
+ pub fn new(owner_id: AccountId, total_supply: U128, metadata: FungibleTokenMetadata) -> Self {
+```
+
+inside impl block we can define a static function like this so it can be called from the type itself, here we return [Self](https://stackoverflow.com/questions/32304595/whats-the-difference-between-self-and-self) from the function so here we refere to the current type.
+
+----
+
+### [static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/) usage
+
+```rs=110
+ let mut builder = VMContextBuilder::new();
+```
+
+here we call a static function 'new' in the type 'VMContextBuilder' and this is widly used method to create a new instance because Rust doesn't have constractors.
+
+----
+
+### [instance function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)
+
+```rs=81
+ fn on_account_closed(&mut self, account_id: AccountId, balance: Balance) {
+     log!("Closed @{} with {}", account_id, balance);
+ }
+```
+
+inside impl block we can define instance function like this code define function that takes parameters in addation to '& mut [self](https://doc.rust-lang.org/std/keyword.self.html)', rust introduce new concept cold [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) so here we borrow mutable refrence for the current object so that the function can edit on it.
+
+----
+
+### instance function and immutable reference
+
+```rs=95
+ fn ft_metadata(&self) -> FungibleTokenMetadata {
+     self.metadata.get().unwrap()
+ }
+```
+
+here we define an intance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in 96th line we use it to get data from 'metadata' variable.
+
+----
+
+### instance function calling
+
+```rs=110
+ let mut builder = VMContextBuilder::new();
+ builder
+     .current_account_id(accounts(0))
+     .signer_account_id(predecessor_account_id.clone())
+     .predecessor_account_id(predecessor_account_id);
+```
+
+line 112 to 114 calling instance function on the variable 'builder' and these lines follows [builder pattern](https://doc.rust-lang.org/1.0.0/style/ownership/builders.html)
+
+---
+
+## [ownership](https://doc.rust-lang.org/rust-by-example/scope/move.html) and [borrowing](https://doc.rust-lang.org/rust-by-example/scope/borrow.html)
+
+rust has unique concept called ownership and borrowing so when you assign variables to anther so most of the time instead of copying, the ownership taken by the second variable, so we can use borrowing and other things so keep the origin variable
+
+----
+
+### [Clone](https://doc.rust-lang.org/std/clone/trait.Clone.html) and ownership
+
+```rs=113
+ .signer_account_id(predecessor_account_id.clone())
+ .predecessor_account_id(predecessor_account_id);
+```
+
+as we mention when we use a varable in passing to function or to assign anther variable so the ownership is transfered and the origin variable move and this exist with non-primative types unless they implement [Copy trait](https://doc.rust-lang.org/std/marker/trait.Copy.html), so in line 13 we use clone function to make a copy of data and pass it so that we could use the original variable in the next line to be passed to the function
+
+---
+
+## [testing in rust](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)
+
+Tests are Rust functions that verify that the non-test code is functioning in the expected manner.
+
+----
+
+### unit test
+
+```rs=118
+ #[test]
+ fn test_new() {
+     let mut context = get_context(accounts(1));
+     testing_env!(context.build());
+     let contract = Contract::new_default_meta(accounts(1).into(), TOTAL_SUPPLY.into());
+     testing_env!(context.is_view(true).build());
+     assert_eq!(contract.ft_total_supply().0, TOTAL_SUPPLY);
+     assert_eq!(contract.ft_balance_of(accounts(1)).0, TOTAL_SUPPLY);
+ }
+```
+
+so here we writing a function and anntotate it as test like in line 118, and we use assertion funtions like at lines 124 and 125
+
+---
+
+## [modules](https://doc.rust-lang.org/rust-by-example/mod.html) and [imports](https://doc.rust-lang.org/reference/items/use-declarations.html)
+
+Rust structure it's code in modules
+
+----
+
+### importing from other crates
+
+```rs=18
+use near_contract_standards::fungible_token::metadata::{
+    FungibleTokenMetadata, FungibleTokenMetadataProvider, FT_METADATA_SPEC,
+};
+use near_contract_standards::fungible_token::FungibleToken;
+```
+
+these lines imports struct types from other crates that must be mentioned as a dependence in [Cargo.toml](https://doc.rust-lang.org/cargo/reference/manifest.html)
 
 ----
 
 ### modules
 
-```rs=1
-mod account;
-mod agent;
-mod asset;
-#[macro_use]
-mod macros;
-mod mission_control;
-mod rate;
+```rs=100
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
 ```
 
-This smart contract code is designed in multi[modules](https://doc.rust-lang.org/rust-by-example/mod.html) and the root of the crate is lib.rs combine them all.
-
-----
-
-### traits
-
-```rs=103
-impl PartialEq for Account {
-```
-
-rust is not object oriented language but has [traits](https://doc.rust-lang.org/book/ch10-02-traits.html) that can be used to define shared behavior.[PartialEq](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) is builtin trait for equality and it called operator overload in other languages and here we implement it for Account type by implemting all it's types, we can implment this trait and other operator overload automatically.
-
-----
-
-### operations with non-primative types
-
-```rs=42
- let credit = &Account(rate.credit.clone()) * quantity;
- let debit = &Account(rate.debit.clone()) * quantity;
- let (buyer, seller) = (&(buyer - &debit) + &credit, &(seller - &credit) + &debit);
-```
-
-here we are making arithmatic operations on non primative types, but we must implement [operator overloads](https://doc.rust-lang.org/rust-by-example/trait/ops.html) traits for them.
-
-----
-
-### generics
-
-```rs=82
- fn op<F>(lhs: &Account, rhs: &Account, op: F) -> Account
- where
-     F: Fn(&Quantity, &Quantity) -> Quantity,
-```
-
-here we define function with parameters which one of them is 'op:F' and it is a [generic](https://doc.rust-lang.org/rust-by-example/generics.html) type and here we bounded it with trait type which is [Fn](https://doc.rust-lang.org/std/ops/trait.Fn.html).
-
-----
-
-### macros
-
-```rs=8
-#[derive(
-    PartialEq,
-    Eq,
-    PartialOrd,
-    Hash,
-    Clone,
-    Copy,
-    Serialize,
-    Deserialize,
-    Debug,
-    BorshDeserialize,
-    BorshSerialize,
-)]
-#[serde(crate = "near_sdk::serde")]
-pub struct Quantity(pub i32);
-```
-
-[macros](https://doc.rust-lang.org/rust-by-example/macros.html) in rust allows metaprogramming, there are macro rules and procudure macro and it is an advanced topic with alot of details and you  can read more from [here](http://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/macros.html).
-
-----
-
-### macros
-
-first line use [derive-macro](https://doc.rust-lang.org/reference/attributes/derive.html) to generate implementation for these traits instead of making custom implementation for them.[BorshDeserialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshDeserialize.html), [BorshSerialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshSerialize.html) are used to convert to and from object and binary value but Serialize and Deserialize are used to convert to and from object and json value. 
-
-----
-
-### Clone and Copy traits with macros
-
-```rs=77
- lhs.insert(rhs_key.clone(), Quantity(0));
-```
-
-here we use the function 'clone' on the non-primitive variable to get a deplicate of it but this requires that the type of this variable implementing [Clone](https://doc.rust-lang.org/std/clone/trait.Clone.html) trait other wise to get the data you only can move it's ownership if it's not implemnting [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait, and in the previous code we see that we implemented these traits using derive-macro.
-
-----
-
-### calling macro
-
-```rs=47
- Account(hashmap![
-     Asset::MissionTime => Quantity(1000000),
- ])
-```
-
-It is a defintion for a private function, hashmap! it is [macro rules](https://doc.rust-lang.org/rust-by-example/macros.html) call with key=>value as input, this macro take pramaters and generate code to make a hashmap with this data.
-
----
-
-## Learning with fixing errors and warnnings
-
-we will investigate smart contracts that has warrnings and errors appear when using [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html) then fixing them one by one.we will investigate [status message collection](https://github.com/near/near-sdk-rs/tree/master/examples/status-message-collections) :records the status messages of the accounts that call this contract.
-
-----
-
-### the code with errors
-
-```rs=1
-use near_sdk::collections::{LookupMap, LookupSet};
-use near_sdk::{env, near_bindgen, BorshStorageKey, AccountId};
-
-#[derive(BorshSerialize, BorshStorageKey)]
-enum StorageKey {
-    Records,
-    UniqueValues,
-}
-
-#[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize)]
-pub struct StatusMessage {
-    pub records: LookupMap<AccountId, String>,
-    pub unique_values: LookupSet<String>,
-}
-
-impl Default for StatusMessage {
-    fn default() -> self {
-        self {
-            records: LookupMap::new(StorageKey::Records),
-            unique_values: LookupSet::new(StorageKey::UniqueValues),
-        }
-    }
-}
-
-#[near_bindgen]
-impl StatusMessage {
-    /// Returns true if the message is unique
-    pub fn set_status(&self, message: String) -> bool {
-        let account_id = env::signer_account_id();
-        self.records.insert(&account_id, message);
-        self.unique_values.insert(&message)
-    }
-
-    pub fn get_status(&self, account_id: AccountId) -> Option<String> {
-        self.records.get(&account_id);
-    }
-}
-```
-
-----
-
-### missing to import error
-
-```
-error: cannot find derive macro `BorshSerialize` in this scope
-      --> src\lib.rs:5:10
-      |
-    5 | #[derive(BorshSerialize, BorshStorageKey)]
-      |          ^^^^^^^^^^^^^^
-    error: cannot find derive macro `BorshDeserialize` in this scope
-      --> src\lib.rs:12:10
-       |
-```
-
-the compiler here throws error that it can't find 'BorshDeserialize' and 'BorshSeserialize' so to solve it you must provide full path to these traits or include them at start of the file like ```use near_sdk::borsh::{BorshDeserialize, BorshSerialize};```
-
-----
-
-### mismatch parameter error
-
-```
-      --> src\lib.rs:32:42
-      |
-   32 |         self.records.insert(&account_id, message);
-      |                                          ^^^^^^^
-      |             expected `&std::string::String`,found struct `std::string::String`
-      |             help: consider borrowing here: `&message`
-      --> src\lib.rs:12:10
-      |
-```
-
-Rust compiler is very helpful and lead you fix your error with some advisable messages so here you must pass a reference to the [string]https://doc.rust-lang.org/stable/std/string/struct.String.html not the string it self
-
-----
-
-### mismatch return type error
-
-```
-      error[E0308]: mismatched types
-      --> src\lib.rs:36:60
-      |
-   32 |         pub fn get_status(&mut self, account_id: AccountId) -> Option<String> {
-      |                ----------                                      ^^^^^^^^^^^^^^expected enum `std::option::Option`, found `()`
-      |                |
-      |            implicitly returns `()` as its body has no tail or `return` expression
-   37 |                                       self.records.get(&account_id);
-      |                                      - help: consider removing this semicolon
-      |
-      = note:   expected enum `std::option::Option<std::string::String>`
-                      found unit type `()`
-```
-
-in rust you can return data from the function simply by put the value at the end of the function without a semicolon or put semicolon but use [return](https://doc.rust-lang.org/std/keyword.return.html) keyword, 
-
-----
-
-### continue mismatch return type errors
-
-so here the compiler says that you return nothing but it function wants [Option](https://doc.rust-lang.org/std/option/) of string to be returned, so fix it by removing the semicolon at the last line in the function so that the return from calling 'get' function could be returned,'error[E0308]' this number could be helpful and you can search with it to get the full details and examples for this error.
-
-----
-
-### mutablity error
-
-```
-      error[E0596]: cannot borrow `self.records` as mutable, as it is behind a `&` reference
-      --> src\lib.rs:32:9
-      |
-   30 |         pub fn set_status(&self, message: String) -> bool {
-      |                           ----- help: consider changing this to be a mutable reference: `&mut self`
-   31 |         let account_id = env::signer_account_id();
-   32 |         self.records.insert(&account_id, &message);
-      |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
-```
-
-in rust in order to modify a variable you must define at as a mutable, so here to here to update in current object you must declare it as [mutable reference](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html).
+we can define new module in rust to structure our code, here we declaring a module at line 101 ,and at line 100 we annotate that it is a test module and use a [compile time switch](https://doc.rust-lang.org/reference/conditional-compilation.html) to compile this module only at non-WASM platform
 

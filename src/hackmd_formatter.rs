@@ -8,10 +8,11 @@ use std::error::Error;
 //8 lines in main page
 
 const MAIN_PAGE_CHARS:usize = 365;
-const LINE_CHARS:usize = 53;
-const PAGE_LINES:usize = 13;
-const PAGE_CHARS:usize = 900;
-const PAGE_HEADLINE_LINES:usize = 3;
+const LINE_CHARS:usize = 49;
+const PAGE_LINES:usize = 12;
+//const PAGE_CHARS:usize = 588;
+const PAGE_CHARS:usize = 1188;
+const PAGE_HEADLINE_LINES:usize = 1;
 //const MAIN_PAGE_HEADLINE_LINES:usize = 3;
 ///hackmd formatter
 pub struct HackMDFormatter;
@@ -87,7 +88,12 @@ fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>
             *data = data.to_string() + &*format!("```rs={}\n",start) + code.as_str() + "\n```\n\n";
         }
         //lines number
-        ((end + 2 - start)/2) %PAGE_LINES
+         let lines_counts =  ( (end +1 - start)*5/7)+1;
+        if lines_counts > PAGE_LINES{
+            PAGE_LINES
+        }else {
+            lines_counts
+        }
     }else{
         0
     };
@@ -101,13 +107,15 @@ fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>
         0
     };
     let used_chars = (code_lines_count + title_count + raw_data_lines_count) * LINE_CHARS  ;
-    let change_size = PAGE_CHARS - used_chars;
+ //   println!("used {:?} ,{} {} {}",used_chars, code_lines_count,title_count,page.text.len());
+ //   println!("{:?}",page.text);
+    let change_size:isize = PAGE_CHARS as isize - used_chars as isize;
    // let change_size = 350;
     if !page.text.is_empty() {
         if PAGE_CHARS <= used_chars{
             eprintln!("page text with title:{} must be shifted to the next page",page.title)
         }
-        else if page.text.len() > change_size{
+        else if page.text.len() as isize > change_size{
             eprintln!("page text with title:{} must be {} at most but you enter {}",page.title,change_size,page.text.len());
         }
         data.push_str(page.text.as_str());
@@ -128,8 +136,8 @@ fn format_sections_for_hackmd(sections:&Vec<Section>)->Result<String,Box<dyn Err
             }else{
                 0
             };
-            let txt_chars = PAGE_CHARS - head_chars;
-            if section.text.len() > txt_chars{
+            let txt_chars:isize = PAGE_CHARS as isize - head_chars as isize;
+            if section.text.len() as isize > txt_chars{
                 eprintln!("section text with title:'{}' must be {} at most",section.title,txt_chars);
                 
             }

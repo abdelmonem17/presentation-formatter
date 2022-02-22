@@ -94,7 +94,7 @@ fn get_line_by_numbers(code:&str,start:usize,end:usize)->Result<String,Box<dyn E
         }
     }
     spaces.pop();
-    println!("line:{:?}\nspaces :{:?}",lines[0],spaces);
+   // println!("line:{:?}\nspaces :{:?}",lines[0],spaces);
     let lines:String = lines.iter().map(|line| line.replacen(spaces.as_str(),"",1))
         .collect::<Vec<_>>().join("\n");
     Ok(lines)

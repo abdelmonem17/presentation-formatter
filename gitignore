@@ -1,1 +1,7 @@
 /target
+
+structs --> functions --> impl section --> self | mut self vs &self &mut self, mu ownership / borrowing 
+
+or something like this
+
+variables --> functions --> ownership / borrowing --> self vs &self vs mut self
