@@ -108,7 +108,7 @@ inside impl block we can define a static function like this so it can be called 
  let mut builder = VMContextBuilder::new();
 ```
 
-here we call a static function 'new' in the type 'VMContextBuilder' and this is widly used method to create a new instance because Rust doesn't have constractors.
+here we call a static function 'new' in the type 'VMContextBuilder' and this is widly used method to create a new instance because Rust doesn't have constractor.
 
 ----
 
@@ -132,7 +132,7 @@ inside impl block we can define instance function like this code define function
  }
 ```
 
-here we define an intance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in 96th line we use it to get data from 'metadata' variable.
+here we define an instance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in 96th line we use it to get data from 'metadata' variable.
 
 ----
 

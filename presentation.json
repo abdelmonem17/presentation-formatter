@@ -50,7 +50,7 @@
 		{
           "title": "importing",
           "code": "https://github.com/near/near-sdk-rs/blob/1c5106bf0b3380d66d2689174f5e50b612101331/examples/status-message/src/lib.rs#L1-L4",       
-	      "text" : "here,we are [importing](https://doc.rust-lang.org/reference/items/use-declarations.html) some structs,[traits](https://doc.rust-lang.org/book/ch10-02-traits.html) and other memebers from other libraries,also they are cold crates, but to import crate you must mention it in [Cargo.toml](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html) file."
+	      "text" : "here,we are [importing](https://doc.rust-lang.org/reference/items/use-declarations.html) some structs,[traits](https://doc.rust-lang.org/book/ch10-02-traits.html) and other memebers from other libraries,also they are called crates, but to import crate you must mention it in [Cargo.toml](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html) file."
 		},
 		
 		{

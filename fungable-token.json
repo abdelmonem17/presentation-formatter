@@ -9,12 +9,12 @@
             {
               "title": "[struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)",
               "code":  "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L32-L35",
-              "text":  "Rust doen't have classes but instead struct to define a container for data like in these line of code we define a struct with two variables 'token' and 'metadata'."
+              "text":  "Rust doesn't have classes but instead struct to define a container for data like in these line of code we define a struct with two variables 'token' and 'metadata'."
             },
             {
                "title":  "[enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html)",
                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L40-L43",
-               "text":  "Rust have enums to give names to const variables in additions other featurs we will explore them in next lessons like in this code we define new type called 'StorageKey' with two possibilities 'FungibleToken' and 'Metadata'."
+               "text":  "Rust has enums to give names to const variables in additions other featurs we will explore them in next lessons like in this code we define new type called 'StorageKey' with two possibilities 'FungibleToken' and 'Metadata'."
             },
             {
                 "title": "[const](https://doc.rust-lang.org/std/keyword.const.html)",
@@ -43,7 +43,7 @@
             {
                 "title": "[impl](https://doc.rust-lang.org/std/keyword.impl.html)",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L46",
-                "text":  "here we start to write function to manipulate the dervied type"
+                "text":  "here we start to write function to manipulate the derived type"
             },
             {
                 "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)",
@@ -51,19 +51,19 @@
                 "text": "inside impl block we can define a static function like this so it can be called from the type itself, here we return [Self](https://stackoverflow.com/questions/32304595/whats-the-difference-between-self-and-self) from the function so here we refere to the current type."
             },
             {
-                "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/) usage",
+                "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/) call",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L110",
-                "text": "here we call a static function 'new' in the type 'VMContextBuilder' and this is widly used method to create a new instance because Rust doesn't have constractors."
+                "text": "here we call a static function 'new' in the type 'VMContextBuilder' and this is widly used method to create a new instance because Rust doesn't have constractor."
             },
             {
                 "title": "[instance function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L81-L83",
-                "text" : "inside impl block we can define instance function like this code define function that takes parameters in addation to '& mut [self](https://doc.rust-lang.org/std/keyword.self.html)', rust introduce new concept cold [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) so here we borrow mutable refrence for the current object so that the function can edit on it."
+                "text" : "inside impl block we can define instance function like this code defines function that takes parameters in addition to '& mut [self](https://doc.rust-lang.org/std/keyword.self.html)', rust introduce new concept called [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) so here we borrow mutable refrence for the current object so that the function can edit on it."
             },
             {
                 "title": "instance function and immutable reference",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L95-L97",
-                "text" : "here we define an intance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in 96th line we use it to get data from 'metadata' variable."
+                "text" : "here we define an instance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in 96th line we use it to get data from 'metadata' variable."
             },
             {
                 "title": "instance function calling",
@@ -99,7 +99,7 @@
       },
       {
         "title": "[modules](https://doc.rust-lang.org/rust-by-example/mod.html) and [imports](https://doc.rust-lang.org/reference/items/use-declarations.html)",
-        "text":"Rust structure it's code in modules.",
+        "text":"Rust structure it's code in modules so you can have mutliple files in your projects.",
         "pages" : [
             {
                 "title": "importing from other crates",
@@ -110,6 +110,23 @@
                 "title": "modules",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L100-L101",
                 "text": "we can define new module in rust to structure our code, here we declaring a module at line 101 ,and at line 100 we annotate that it is a test module and use a [compile time switch](https://doc.rust-lang.org/reference/conditional-compilation.html) to compile this module only at non-WASM platform."
+            }
+        ]
+          
+      },
+      {
+        "title": "[macros](https://doc.rust-lang.org/book/ch19-06-macros.html)",
+        "text":"Macros are widly used in metaprogramming for generating code at compile time.",
+        "pages" : [
+            {
+                "title": "[procedure macro](https://doc.rust-lang.org/reference/procedural-macros.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L30-L31",
+                "text": "procedure macros allow creating syntax extentions like at line 30 we attribute the that this struct should generate some code for near, at line 31 [derive-macro](https://doc.rust-lang.org/reference/attributes/derive.html) to generate implementation for these traits instead of making custom implementation for them.[BorshDeserialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshDeserialize.html), [BorshSerialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshSerialize.html) are used to convert to and from object and binary value but Serialize and Deserialize are used to convert to and from object and json value."
+            },
+            {
+                "title": "[macro rules](https://doc.rust-lang.org/rust-by-example/macros.html)",
+                 "code":"https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L82",
+                "text": "macro rules it is a macro like function but evaluated at compile time in addition to have ability to generate codes, this line call macro and as we see it is like call but have '!' so here we call macro called 'log' to log some information to be traced later"
             }
         ]
           

@@ -1,0 +1,125 @@
+{
+    "title":"Learn rust with NEAR",
+    "text"  : "[cross contract low](https://github.com/near/near-sdk-rs/tree/master/examples/cross-contract-low-level)",
+    "sections":[
+      {
+        "title": "Variables and constant",
+        "text":"Rust has variables like any other language such as [primative and non-primative](https://doc.rust-lang.org/book/ch03-02-data-types.html) and there are some special features we will disscus them one by one.",
+        "pages" : [
+            {
+                "title": "primative types",
+                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L81-L82",
+                "text":  "here we are defining two variables of type [usize](https://doc.rust-lang.org/std/primitive.usize.html) and declare them as 'mut' to make the variable mutable and we will learrn about the mutablity in the next section"
+            },
+            {
+              "title": "[struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)",
+               "code" :"https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L11-L13",
+              "text":  "Rust doesn't have classes but instead struct to define a container for data like in these line of code we define a struct with one variables 'checked_promise'."
+            },
+            {
+                "title": "[const](https://doc.rust-lang.org/std/keyword.const.html)",
+                "code" :"https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L7", 
+                "text": "Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for single call gas cost."
+            }
+        ]
+          
+      },
+      {
+        "title": "[control flow](https://doc.rust-lang.org/book/ch03-05-control-flow.html)",
+        "text":"you can run some code repeatedly or according to a condition",
+        "pages" : [
+            {
+                "title": "if condition",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L93-L99",
+                "text": "we comparing the data and accordingly we decide to execute code inside 'if' or 'else'"
+            },
+            {
+                "title": "looping",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L84-L100",
+                "text": "here executing the code inside the loop infinitly or until breaking explicitly"
+            }
+        
+        ]
+          
+      },
+      {
+        "title": "impl section, and static and instance functions",
+        "text":"Rust is not object oriented language but you can define structs as data container and attach function to operate on this data, also you can do the same for enums.",
+        "pages" : [
+            {
+                "title": "[impl](https://doc.rust-lang.org/std/keyword.impl.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L22",
+                "text":  "here we start to write function to manipulate the derived type"
+            },
+            {
+                "title": "impl [trait](https://doc.rust-lang.org/book/ch10-02-traits.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L15",
+                "text" : "trait is an interface that forced a specific design, here we are implementing [Default](https://doc.rust-lang.org/std/default/trait.Default.html) trait for 'CrossContract' struct so we must implement all functions in this trait"
+            },
+            {
+                "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L16-L18",
+                "text": "inside impl block we can define a static function like this so it can be called from the type itself, here we return [Self](https://stackoverflow.com/questions/32304595/whats-the-difference-between-self-and-self) from the function so here we refere to the current type."
+            },
+            {
+                "title": "[instance function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L155-L158",
+                "text" : "inside impl block we can define instance function like this code defines function that takes parameters in addition to '& mut [self](https://doc.rust-lang.org/std/keyword.self.html)', rust introduce new concept called [mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) so here we borrow mutable refrence for the current object so that the function can edit on it."
+            },
+            {
+                "title": "instance function calling",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L97",
+                "text": "here we are calling a function called 'push' in variable called 'result' to push data into this [vector](https://doc.rust-lang.org/std/vec/struct.Vec.html)"
+            },
+            {
+                "title": "instance function and immutable reference",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L160-L162",
+                "text" : "here we define an instance function with '&self' this means the function [borrows](https://doc.rust-lang.org/rust-by-example/scope/borrow.html) the current object for readonly like in first line we use it to get data from the current object"
+            }
+        ]
+          
+      },
+      {
+        "title": "[ownership](https://doc.rust-lang.org/rust-by-example/scope/move.html) and [borrowing](https://doc.rust-lang.org/rust-by-example/scope/borrow.html)",
+        "text": "rust has unique concept called ownership and borrowing so when you assign variables to anther so most of the time instead of copying, the ownership taken by the second variable, so we can use borrowing and other things so keep the origin variable",
+        "pages" : [
+            {
+                "title": "[Clone](https://doc.rust-lang.org/std/clone/trait.Clone.html) and ownership",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L61-L62",
+                "text":  "as we mention when we use a varable in passing to function or to assign anther variable so the ownership is transfered and the origin variable move and this exist with non-primative types unless they implement [Copy trait](https://doc.rust-lang.org/std/marker/trait.Copy.html), so here we use clone function to make a copy of data and so as not to be moved and reused after that"
+            }
+        ]
+          
+      },
+      {
+        "title": "[imports](https://doc.rust-lang.org/reference/items/use-declarations.html)",
+        "text":"You can import some code from external library",
+        "pages" : [
+            {
+                "title": "importing from other crates",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L1-L4",
+                "text": "these lines imports struct types from other crates that must be mentioned as a dependence in [Cargo.toml](https://doc.rust-lang.org/cargo/reference/manifest.html)."
+            }
+        ]
+          
+      },
+      {
+        "title": "[macros](https://doc.rust-lang.org/book/ch19-06-macros.html)",
+        "text":"Macros are widly used in metaprogramming for generating code at compile time.",
+        "pages" : [
+            {
+                "title": "[procedure macro](https://doc.rust-lang.org/reference/procedural-macros.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L9-L10",
+                "text": "procedure macros allow creating syntax extentions like at first line we attribute the that this struct should generate some code for near, second line [derive-macro](https://doc.rust-lang.org/reference/attributes/derive.html) to generate implementation for these traits instead of making custom implementation for them.[BorshDeserialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshDeserialize.html), [BorshSerialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshSerialize.html) are used to convert to and from object and binary value but Serialize and Deserialize are used to convert to and from object and json value."
+            },
+            {
+                "title": "[macro rules](https://doc.rust-lang.org/rust-by-example/macros.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L83",
+                "text": "macro rules it is a macro like function but evaluated at compile time in addition to have ability to generate codes, this line call macro to create an empty vector"
+            }
+        ]
+          
+      }
+    ]
+  
+  }
