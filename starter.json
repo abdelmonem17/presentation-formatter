@@ -7,6 +7,21 @@
         "text":"Rust has variables like any other language such as primative and non-primative and there are some special features we will disscus them one by one.",
         "pages" : [
             {
+                "title": "primative types",
+                "code" :"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L290",
+                "text":  "here we are defining a variable as a parameter of type 'bool'"
+             },
+            {
+                "title": "[const](https://doc.rust-lang.org/std/keyword.const.html)",
+                "code" :"", 
+                "text": "Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for image csv value that might be used many times in the program."
+            },
+            {
+                "title": "[static](https://doc.rust-lang.org/reference/items/static-items.html)",
+                "code" :"", 
+                "text": "Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for image csv value that might be used many times in the program."
+            },
+            {
               "title": "[struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)",
                "code" :"",
               "text":  "Rust doesn't have classes but instead struct to define a container for data like in these line of code we define a struct with two variables 'token' and 'metadata'."
@@ -17,9 +32,32 @@
                "text":  "Rust has enums to give names to const variables in additions other featurs we will explore them in next lessons like in this code we define new type called 'StorageKey' with two possibilities 'FungibleToken' and 'Metadata'."
             },
             {
-                "title": "[const](https://doc.rust-lang.org/std/keyword.const.html)",
-                "code" :"", 
-                "text": "Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for image csv value that might be used many times in the program."
+                "title": "[vector](https://doc.rust-lang.org/std/vec/struct.Vec.html)",
+                "code":"",
+                "text" : "vector is a dynamic list of homogeneous data stored in the heap, so here we creating vector with no element with the help of macro `vec![]`"
+            },
+            {
+                "title": "[array](https://doc.rust-lang.org/rust-by-example/primitives/array.html)",
+                "code":"",
+                "text" : "array is a collection of contiguous data with same type and it states as fixed size, and here we define array of 3 element of type 'u8'"
+            }
+           
+        ]
+          
+      },
+      {
+        "title": "[strings](https://doc.rust-lang.org/rust-by-example/std/str.html)",
+        "text":"rust has many types that represents sequence of characters",
+        "pages" : [
+            {
+                "title": "[String](https://doc.rust-lang.org/std/string/index.html)",
+                "code" : "",
+                "text" : "String is a UTF-8 dynamic groupable list used to store sequence of chars, and we here we call [to_string](https://doc.rust-lang.org/std/string/trait.ToString.html) to get String from the variable of type '&str' we will check it next page"
+            },
+            {
+                "title": "[&str](https://doc.rust-lang.org/std/primitive.str.html)",
+                "code" : "",
+                "text" : "it is slice version of String so it reference to other type of String ,here we are haveing a string literal of type '&'static str' and this mean it reference to a string with static lifetime which will live lone all program lifetime"
             }
         ]
           
@@ -91,7 +129,7 @@
             {
                 "title": "unit test",
                 "code" : "",
-                "text": "so here we writing a function and anntotate it as test like in line 118, and we use assertion funtions like at lines 124 and 125"
+                "text": "so here we are writing a function and anntotate it as test like in line 118, and we use assertion funtions like at lines 124 and 125"
             }
         ]
           

@@ -1,0 +1,196 @@
+{
+    "title":"Learn rust with NEAR",
+    "text"  : "",
+    "sections":[
+        {
+            "title": "Variables and constant",
+            "text":"Rust has variables like any other language such as primative and non-primative and there are some special features we will disscus them one by one, we just want to show that when you assigment like defining a variable the ownership transfered from the right handside to left handside hence the variable moved unless it define the [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait",
+            "pages" : [
+                {
+                   "title": "primative types",
+                   "code" :"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L290",
+                   "text":  "here we are defining a variable as a parameter of type 'bool'"
+                },
+                {
+                    "title": "[const](https://doc.rust-lang.org/std/keyword.const.html)",
+                    "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L29", 
+                    "text":  "Rust has compile time const that recommended to be used with values that used many times in addition to it gives readablity for the code, for example here we define a const for image csv value that might be used many times in the program."
+                },
+                {
+                    "title": "[static](https://doc.rust-lang.org/reference/items/static-items.html)",
+                    "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L26", 
+                    "text": "Rust has runtime const ,it is static variable which all reference to this variable has static lifetime because it lives as long as program runs"
+                },
+                {
+                  "title": "[struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)",
+                  "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L121-L126",
+                  "text":  "Rust doesn't have classes but instead struct to define a container for data like in these line of code we define a struct with it's variables."
+                },
+                {
+                    "title": "[vector](https://doc.rust-lang.org/std/vec/struct.Vec.html)",
+                    "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L704",
+                    "text" : "vector is a dynamic list of homogeneous data stored in the heap, so here we creating vector with no element with the help of macro `vec![]`"
+                },
+                {
+                    "title": "[array](https://doc.rust-lang.org/rust-by-example/primitives/array.html)",
+                    "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L261",
+                    "text" : "array is a collection of contiguous data with same type and it states as fixed size, and here we define array of 3 element of type 'u8'"
+                }
+            ]
+              
+      },
+      {
+        "title": "[strings](https://doc.rust-lang.org/rust-by-example/std/str.html)",
+        "text":"rust has many types that represents sequence of characters",
+        "pages" : [
+            {
+                "title": "[String](https://doc.rust-lang.org/std/string/index.html)",
+                "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L665",
+                "text" : "String is a UTF-8 dynamic groupable list used to store sequence of chars, and we here we call [to_string](https://doc.rust-lang.org/std/string/trait.ToString.html) to get String from the variable of type '&str' we will check it next page"
+            },
+            {
+                "title": "[&str](https://doc.rust-lang.org/std/primitive.str.html)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L746",
+                "text" : "it is slice version of String so it reference to other type of String ,here we are haveing a string literal of type '&'static str' and this mean it reference to a string with static lifetime which will live lone all program lifetime"
+            }
+        ]
+          
+      },
+      {
+        "title": "functions",
+        "text":"like any other language you can define some reusable code and it is called function.",
+        "pages" : [
+            {
+                "title": "function definition and calling",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L273-L279",
+                "text" : "here we are defining a function with name 'new_vesting_schedule', parameter and return type, line 275 we call function and pass expression to it an argument"
+            }
+        ]
+          
+      },
+      {
+        "title": "impl section, and static and instance functions",
+        "text":"Rust is not object oriented language but you can define structs as data container and attach function to operate on this data, also you can do the same for enums.",
+        "pages" : [
+            {
+                "title": "[impl](https://doc.rust-lang.org/std/keyword.impl.html)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L150",
+                "text":  "here we start to write function to manipulate the derived type"
+            },
+            {
+                "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L181-L190",
+                "text": "inside impl block we can define a static function like this so it can be called from the type itself, here we return [Self](https://stackoverflow.com/questions/32304595/whats-the-difference-between-self-and-self) from the function so here we refere to the current type."
+            },
+            {
+                "title": "[static function](https://turreta.com/2019/10/14/static-and-instance-methods-in-struct/) call",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L320-L329",
+                "text": "here we call a static function 'new' in the type 'LockupContract' and this is widly used method to create a new instance because Rust doesn't have constractor."
+            },
+            {
+                "title": "instance function calling",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L219",
+                "text": "[is_none](https://doc.rust-lang.org/beta/core/option/enum.Option.html) is an instance function used to check the type of option is None or else"
+            }
+        ]
+          
+      },
+      {
+        "title": "[ownership](https://doc.rust-lang.org/rust-by-example/scope/move.html) and [borrowing](https://doc.rust-lang.org/rust-by-example/scope/borrow.html)",
+        "text": "rust has unique concept called ownership and borrowing so when you assign variables to anther so most of the time instead of copying, the ownership taken by the second variable, so we can use borrowing and other things so keep the origin variable",
+        "pages" : [
+            {
+                "title": "[Clone](https://doc.rust-lang.org/std/clone/trait.Clone.html) and ownership",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L855",
+                "text" : "as we mention when we use a varable in passing to function or to assign anther variable so the ownership is transfered and the origin variable move and this exist with non-primative types unless they implement [Copy trait](https://doc.rust-lang.org/std/marker/trait.Copy.html), so here we use clone function to make a copy of data and so as not to be moved and reused after that"         
+           }
+        ]
+          
+      },
+      {
+        "title": "[Generic types](https://doc.rust-lang.org/book/ch10-00-generics.html)",
+        "text":"Every programming language has tools for effectively handling the duplication of concepts and write extensible agnostic",
+        "pages" : [
+            {
+                "title": "[trait](https://doc.rust-lang.org/book/ch10-02-traits.html)",
+                "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L57-L59",
+                "text": "trait define shared behaviour between implementors and it is consider as a contract, here we define a trait 'ExtStakingPoolWhitelist' with it's abstracted functionality"
+            },
+            {
+                "title": "[trait](https://doc.rust-lang.org/book/ch10-02-traits.html) impl",
+                "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L143-L147",
+                "text": "here we impl [Default](https://doc.rust-lang.org/std/default/trait.Default.html) trait for 'LockupContract' type"
+            }
+        ]
+          
+      },
+      {
+        "title": "[testing in rust](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)",
+        "text":"Tests are Rust functions that verify that the non-test code is functioning in the expected manner.",
+        "pages" : [
+            {
+                "title": "unit test",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L379-L389",
+                "text": "so here we are writing a function and anntotate it as test like in first line, and we use assertion funtions like at line number 386"
+            },
+            {
+                "title": "unit test attribute",
+                "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L392",
+                "text":"here we attribute the test function and expect it fail with this messasge"
+            }
+
+        ]
+          
+      },
+      {
+        "title": "[modules](https://doc.rust-lang.org/rust-by-example/mod.html) and [imports](https://doc.rust-lang.org/reference/items/use-declarations.html)",
+        "text":"Rust structure it's code in modules so you can have mutliple files in your projects.",
+        "pages" : [
+            {
+                "title": "importing from other crates",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L3-L5",
+                "text": "these lines imports struct types from other crates that must be mentioned as a dependence in [Cargo.toml](https://doc.rust-lang.org/cargo/reference/manifest.html)."
+            },
+            {
+                "title": "modules",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L15-L19",
+                "text": "we can define new module in a new rust file to structure our code but here but we must refer these module to the root of the crate and it is 'lib.rs' file in our code but in binary crate 'main.rs' is the root of the crate."
+            },
+            {
+                "title": "shorten the modules members' path",
+                "code":"https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L7-L10",
+                "text": "we can use codes defined in other modules as it defined in the root file by using [use](https://doc.rust-lang.org/reference/items/use-declarations.html)"
+            }
+        ]
+          
+      },
+      {
+        "title": "[macros](https://doc.rust-lang.org/book/ch19-06-macros.html)",
+        "text":"Macros are widly used in metaprogramming for generating code at compile time.",
+        "pages" : [
+            {
+                "title": "[procedure macro](https://doc.rust-lang.org/reference/procedural-macros.html)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L246",
+                "text": "procedure macro used here to make a compile time switch and compile this code if the target is not WASM "
+            },
+            {
+                "title": "[derive macro](https://doc.rust-lang.org/reference/procedural-macros.html)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L119-L120",
+                "text": "procedure macros allow creating syntax extentions like at first line we attribute the that this struct should generate some code for near, second line [derive-macro](https://doc.rust-lang.org/reference/attributes/derive.html) to generate implementation for these traits instead of making custom implementation for them.[BorshDeserialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshDeserialize.html), [BorshSerialize](https://docs.rs/borsh/latest/borsh/de/trait.BorshSerialize.html) are used to convert to and from object and binary value but Serialize and Deserialize are used to convert to and from object and json value."
+            },
+            {
+                "title": "[macro rules](https://doc.rust-lang.org/rust-by-example/macros.html)",
+                "code" : "https://github.com/near/core-contracts/blob/a11e6d4c97336aa47a871083e7b5cb238d3a0eb5/lockup/src/lib.rs#L361",
+                "text": "macro rules it is a macro like function but evaluated at compile time in addition to have ability to generate codes, this line call macro and as we see it is like call but have '!' so here we call macro called 'assert_eq' used to assert that right equals left"
+            }
+        ]
+          
+      }
+    ]
+  
+  }
+  
+              
+  
+              
+        

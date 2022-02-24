@@ -25,6 +25,23 @@
           
       },
       {
+        "title": "[strings](https://doc.rust-lang.org/rust-by-example/std/str.html)",
+        "text":"rust has many types that represents sequence of characters",
+        "pages" : [
+            {
+                "title": "[String](https://doc.rust-lang.org/std/string/index.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L56",
+                "text" : "String is a UTF-8 dynamic groupable list used to store sequence of chars, and we here we call [to_string](https://doc.rust-lang.org/std/string/trait.ToString.html) to get String from the variable of type '&str' we will check it next page"
+            },
+            {
+                "title": "[&str](https://doc.rust-lang.org/std/primitive.str.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L56",
+                "text" : "it is slice version of String so it reference to other type of String ,here we are haveing a string literal of type '&'static str' and this mean it reference to a string with static lifetime which will live lone all program lifetime"
+            }
+        ]
+          
+      },
+      {
         "title": "functions",
         "text":"like any other language you can define some reusable code and it is called function.",
         "pages" : [
@@ -92,7 +109,7 @@
             {
                 "title": "unit test",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L118-L126",
-                "text": "so here we writing a function and anntotate it as test like in line 118, and we use assertion funtions like at lines 124 and 125"
+                "text": "so here we are writing a function and anntotate it as test like in line 118, and we use assertion funtions like at lines 124 and 125"
             }
         ]
           
@@ -110,6 +127,11 @@
                 "title": "modules",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L100-L101",
                 "text": "we can define new module in rust to structure our code, here we declaring a module at line 101 ,and at line 100 we annotate that it is a test module and use a [compile time switch](https://doc.rust-lang.org/reference/conditional-compilation.html) to compile this module only at non-WASM platform."
+            },
+            {
+                "title": "using code from other modules",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/fungible-token/ft/src/lib.rs#L142",
+                "text": "to use code like function from other modules you can use full qualified name like in this code we call function from 'env' module"
             }
         ]
           
@@ -134,9 +156,3 @@
     ]
   
   }
-  
-              
-  
-              
-                         
-  

@@ -4,12 +4,12 @@
     "sections":[
       {
         "title": "Variables and constant",
-        "text":"Rust has variables like any other language such as primative and non-primative and there are some special features we will disscus them one by one.",
+        "text":"Rust has variables like any other language such as primative and non-primative and there are some special features we will disscus them one by one, we just want to show that when you assigment like defining a variable the ownership transfered from the right handside to left handside hence the variable moved unless it define the [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait",
         "pages" : [
             {
                "title": "primative types",
                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L81-L82",
-               "text":  "here we are defining a variable and cast it to type [u128](https://doc.rust-lang.org/std/primitive.u128.html) so the compiler bind the type to u128"
+               "text":  "here we are defining a variable with value and cast it to type [u128](https://doc.rust-lang.org/std/primitive.u128.html) so the compiler bind the type to u128"
             },
             {
               "title": "[struct](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)",
@@ -17,9 +17,36 @@
               "text":  "Rust doesn't have classes but instead struct to define a container for data like in these line of code we define a struct with it's variables."
             },
             {
+                "title": "[vector](https://doc.rust-lang.org/std/vec/struct.Vec.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L41-L43",
+                "text" : "vector is a dynamic list of homogeneous data stored in the heap, for example at first line we get the size of the list, second and third lines we are taking [range](https://doc.rust-lang.org/std/ops/struct.Range.html) of element from the vector and generate new vector with help of 'to_vec' function"
+            },
+            {
+                "title": "[slice](https://doc.rust-lang.org/std/vec/struct.Vec.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L32",
+                "text" : "slice lets you reference contiguous sequence of elements in a collection, here we call [macro](https://doc.rust-lang.org/rust-by-example/macros.html) that gets the bytes in slice with [static lifetime](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html)"
+            },
+            {
                 "title": "[hashmap](https://doc.rust-lang.org/std/collections/struct.HashMap.html)",
                 "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/lockable-fungible-token/src/lib.rs#L8-L15",
-                 "text" : "hashmap is non-primative buildin type in the standard library used to store key and value pairs values, so here at line 12 and 14 we declaring two variables with hashmap types for storing data to be searchable efficiently using hashing"
+                "text" : "hashmap is non-primative buildin type in the standard library used to store key and value pairs values, so here at line 12 and 14 we declaring two variables with hashmap types for storing data to be searchable efficiently using hashing"
+            }
+        ]
+          
+      },
+      {
+        "title": "[strings](https://doc.rust-lang.org/rust-by-example/std/str.html)",
+        "text":"rust has many types that represents sequence of characters",
+        "pages" : [
+            {
+                "title": "[String](https://doc.rust-lang.org/std/string/index.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L49",
+                "text" : "String is a UTF-8 dynamic groupable list used to store sequence of chars, and we here we call [to_string](https://doc.rust-lang.org/std/string/trait.ToString.html) on the variable to get String"
+            },
+            {
+                "title": "[&str](https://doc.rust-lang.org/std/primitive.str.html)",
+                "code" : "https://github.com/near/near-sdk-rs/blob/801ef307ee66856b8a3572fbbd64ab82b8a186dc/examples/cross-contract-low-level/src/lib.rs#L48",
+                "text" : "it is slice version of String so it reference to other type of String ,here we are passing a string literal of type '&'static str' and this mean it reference to a string with static lifetime which will live lone all program lifetime"
             }
         ]
           
