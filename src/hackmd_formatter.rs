@@ -1,4 +1,4 @@
-use crate::{FormatWriter, UserData, Section, get_code_from_link, Page};
+use crate::{FormatWriter, UserData, Section, get_code_from_link, Page, get_links};
 use std::io::Write;
 use std::error::Error;
 
@@ -9,9 +9,9 @@ use std::error::Error;
 
 const MAIN_PAGE_CHARS:usize = 365;
 const LINE_CHARS:usize = 49;
-const PAGE_LINES:usize = 12;
-//const PAGE_CHARS:usize = 588;
-const PAGE_CHARS:usize = 1188;
+//const PAGE_LINES:usize = 13;
+const PAGE_CHARS:usize = 630;
+//const PAGE_CHARS:usize = 1188;
 const PAGE_HEADLINE_LINES:usize = 1;
 //const MAIN_PAGE_HEADLINE_LINES:usize = 3;
 ///hackmd formatter
@@ -71,7 +71,18 @@ fn format_pages_for_hackmd(pages:&Vec<Page>) ->Result<String,Box<dyn Error>>{
     }
     Ok(str)
 }
+
+fn get_represented_text_count(str:&str)->usize{
+    //'[ , ']'  start and end of the link title, in addition to '(' and ')'
+    const ADDITION_CHARS_COUNT:usize = 4;
+    let links_data = get_links(str);
+    let links_text_count = links_data.iter().fold(0,|acc,(_,link)|{
+        acc + link.len() + ADDITION_CHARS_COUNT
+    });
+    str.len() - links_text_count
+}
 fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>>{
+    const MAX_CODE_LINES_BEFORE_SCROLL:usize = 7;
     //let mut data = String::new();
     //write the title
     let title_count = if !page.title.is_empty(){
@@ -88,9 +99,10 @@ fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>
             *data = data.to_string() + &*format!("```rs={}\n",start) + code.as_str() + "\n```\n\n";
         }
         //lines number
-         let lines_counts =  ( (end +1 - start)*5/7)+1;
-        if lines_counts > PAGE_LINES{
-            PAGE_LINES
+        //5/8 gotten from try and error
+        let lines_counts =  ( (end +1 - start)/2)+1;
+        if lines_counts > MAX_CODE_LINES_BEFORE_SCROLL{
+            MAX_CODE_LINES_BEFORE_SCROLL
         }else {
             lines_counts
         }
@@ -101,8 +113,13 @@ fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>
     let raw_data_lines_count = if !page.raw_data.is_empty(){
         //let (code,(start,end)) = get_code_from_link(page.code.as_str())?;
             *data = data.to_string() + &*page.raw_data.join("\n") + "\n\n";
-        //lines number
-        page.raw_data.len()
+        //1/2 gotten from try and error
+       let size = (page.raw_data.len() / 2) + 1;
+        if size > MAX_CODE_LINES_BEFORE_SCROLL{
+            MAX_CODE_LINES_BEFORE_SCROLL
+        }else {
+            size
+        }
     }else{
         0
     };
@@ -112,11 +129,12 @@ fn format_page_for_hackmd(page:&Page,data:&mut String)->Result<(),Box<dyn Error>
     let change_size:isize = PAGE_CHARS as isize - used_chars as isize;
    // let change_size = 350;
     if !page.text.is_empty() {
+        let represented_text_len = get_represented_text_count(page.text.as_str());
         if PAGE_CHARS <= used_chars{
             eprintln!("page text with title:{} must be shifted to the next page",page.title)
         }
-        else if page.text.len() as isize > change_size{
-            eprintln!("page text with title:{} must be {} at most but you enter {}",page.title,change_size,page.text.len());
+        else if represented_text_len as isize > change_size{
+            eprintln!("page text with title:{} must be {} at most but you enter {}",page.title,change_size,represented_text_len);
         }
         data.push_str(page.text.as_str());
         data.push_str("\n\n");

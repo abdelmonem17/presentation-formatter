@@ -100,9 +100,10 @@ fn get_line_by_numbers(code:&str,start:usize,end:usize)->Result<String,Box<dyn E
     Ok(lines)
 }
 
+///returns Vec<(Title,link)>
 pub fn get_links(data:&str)->Vec<(String,String)> {
     let mut out = Vec::new();
-    let regex = regex::Regex::new(r"\[(?P<title>.+)\]\((?P<link>.+)\)").unwrap();
+    let regex = regex::Regex::new(r"\[(?P<title>.+?)\]\((?P<link>.+?)\)").unwrap();
     let matches = regex.captures_iter(data);
     for mat in matches{
         out.push((mat.name("title").unwrap().as_str().to_string()
