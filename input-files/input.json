@@ -1,13 +1,13 @@
 {
   "title":"hello rust",
-  "text": "texting",
+  "text": "introduction",
   "sections":[
     {
       "title": "first section",
-      "text":"first section details",
+      "text":"first section description",
       "pages" : [
         {
-          "title": "page section",
+          "title": "first page",
           "code": "https://github.com/abdelmonem17/presentation-formatter/blob/3e90ca7940feb272125d143ce19a064e9e9e8628/Cargo.toml#L6-L9",
           "text": "first page details"
         }
@@ -16,7 +16,7 @@
     },
     {
       "title": "second section",
-      "text":"first section details",
+      "text":"second section description",
       "pages" : [
         {
           "title": "first page",
